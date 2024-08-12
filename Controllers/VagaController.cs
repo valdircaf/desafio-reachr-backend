@@ -43,13 +43,18 @@ namespace api.Controllers
         public async Task<IActionResult> Put(int id, Vagas vaga)
         {
             var vagaToCheck = await this.repository.GetVaga(id);
-            if (vagaToCheck == null) return NotFound("Usuário não encontrado");
+            if (vagaToCheck == null) return NotFound("Usuário não encontdrado");
 
-            vagaToCheck.Nome = vaga.Nome ?? vagaToCheck.Nome;
-            vagaToCheck.Sallary = vaga.Sallary != null ? vaga.Sallary : vagaToCheck.Sallary;
+            vagaToCheck.Nome = vaga.Nome != "" ? vaga.Nome : vagaToCheck.Nome;
+            vagaToCheck.Sallary = vaga.Sallary != 0 ? vaga.Sallary : vagaToCheck.Sallary;
+            vagaToCheck.Descricao = vaga.Descricao != "" ? vaga.Descricao : vagaToCheck.Descricao;
+            vagaToCheck.Cidade = vaga.Cidade != "" ? vaga.Cidade : vagaToCheck.Cidade;
+            vagaToCheck.Uf = vaga.Uf != "" ? vaga.Uf : vagaToCheck.Uf;
+
+
             this.repository.UpdateVaga(vagaToCheck);
 
-            return await this.repository.SaveChangesAsync() ? Ok("Atualizado com sucesso") : BadRequest("Não adicionado");
+            return await this.repository.SaveChangesAsync() ? Ok(new { message = "Atualizado com sucesso" }) : BadRequest("Não adicionado");
         }
 
         [HttpDelete]
@@ -61,7 +66,7 @@ namespace api.Controllers
 
             this.repository.DeleteVaga(vaga);
 
-            return await this.repository.SaveChangesAsync() ? Ok("Vaga deletada com sucesso") : BadRequest("Erro ao deletar usuário");
+            return await this.repository.SaveChangesAsync() ? Ok(new { message = "Atualizado com sucesso" }) : BadRequest("Erro ao deletar vaga");
 
 
         }
