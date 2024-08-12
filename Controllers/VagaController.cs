@@ -28,7 +28,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetVaga(int id)
         {
             var vaga = await this.repository.GetVaga(id);
-            return vaga != null ? Ok(vaga) : NotFound("Usuário não encontrado");
+            return vaga != null ? Ok(vaga) : NotFound("Vaga não encontrada");
         }
 
         [HttpPost]
@@ -43,7 +43,7 @@ namespace api.Controllers
         public async Task<IActionResult> Put(int id, Vagas vaga)
         {
             var vagaToCheck = await this.repository.GetVaga(id);
-            if (vagaToCheck == null) return NotFound("Usuário não encontdrado");
+            if (vagaToCheck == null) return NotFound("Vaga não encontrada");
 
             vagaToCheck.Nome = vaga.Nome != "" ? vaga.Nome : vagaToCheck.Nome;
             vagaToCheck.Sallary = vaga.Sallary != 0 ? vaga.Sallary : vagaToCheck.Sallary;
